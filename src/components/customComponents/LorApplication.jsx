@@ -71,10 +71,6 @@ const LorApplication = () => {
 
   async function lorApplication(data) {
     try {
-      if (data) {
-        Store.loading = true;
-      }
-
       applyLor.mutate({
         companyName: data.companyName,
         companyAddress: data.companyAddress,
@@ -113,7 +109,9 @@ const LorApplication = () => {
           {error && <div className="text-red-500 ">{error}</div>}
 
           {state.loading && !error && (
-            <div className="text-black  text-center">Loading...</div>
+            <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 size-20">
+              <Loader />
+            </div>
           )}
 
           <DialogHeader className="mb-3">
@@ -157,7 +155,11 @@ const LorApplication = () => {
             </div>
 
             <DialogFooter>
-              <Button type="submit" className="w-full bg-black text-white">
+              <Button
+                type="submit"
+                className="w-full bg-black text-white"
+                disabled={state.loading}
+              >
                 Submit
               </Button>
             </DialogFooter>

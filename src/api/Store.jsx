@@ -278,7 +278,7 @@ export const Store = proxy({
     // console.log(recipientDepartment);
     // console.log("companyAddress", companyAddress);
     // console.log(companyName);
-
+    Store.loading = true;
     try {
       const res = await Axios.put(`/api/v1/users/${lorId}/updateLORrequest`, {
         recipient,
@@ -293,6 +293,8 @@ export const Store = proxy({
     } catch (error) {
       console.log(`Error while updating the lor`, error);
       return error;
+    } finally {
+      Store.loading = false;
     }
   },
 
@@ -339,6 +341,7 @@ export const Store = proxy({
       return res;
     } catch (error) {
       console.log(`Error while filtering the lor`, error);
+      throw error;
     }
   },
 

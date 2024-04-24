@@ -14,6 +14,7 @@ import PendingLor from "./components/customComponents/PendingLor";
 import ApprovedLor from "./components/customComponents/ApprovedLors";
 import RejectedLor from "./components/customComponents/RejectedLor";
 import RegisterAdmin from "./components/customComponents/RegisterAdmin";
+import ForgotPassword from "./components/customComponents/ForgotPassword";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />} />
           </Route>
 
           {/* Student Routes */}
