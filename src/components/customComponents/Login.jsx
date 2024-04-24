@@ -3,34 +3,29 @@ import { Input } from "src/components/libraryComponents/input";
 import { Label } from "src/components/libraryComponents/label";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { Store } from "src/api/Store";
+import { Store } from "../../api/Store";
 import { Link, useNavigate } from "react-router-dom";
 import { useSnapshot } from "valtio";
-import { useEffect, useState } from "react";
 import Loader from "./Loader";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
-
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
+  const [shouldNavigate, setShouldNavigate] = useState(false);
+  const [hideForm, setHideForm] = useState(false);
   const state = useSnapshot(Store);
+  const navigate = useNavigate();
 
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, reset, handleSubmit } = useForm();
 
   const createLoginSession = useMutation({
     mutationKey: ["LOGIN"],
     mutationFn: Store.loginHandler,
-    onSuccess: (success) => {
-      if (success.stack) {
-        toast.error(`${success.response.data.message}`);
+    onSuccess: (res) => {
+      if (res.stack) {
+        toast.error(res.response.data.message);
       } else {
-        const userRole = success?.data?.user?.role;
+        const userRole = res?.data?.user?.role;
         if (userRole === "student") {
           navigate("/studDashboard");
         } else if (userRole === "admin") {
@@ -40,13 +35,11 @@ const Login = () => {
     },
 
     onError: (error) => {
-      console.log(`error in the login mutation`, error);
+      console.log(`Error in the login mutation`, error);
     },
   });
 
   async function submitHandler(data) {
-    console.log("data", data);
-
     try {
       createLoginSession.mutate({
         email: data.email,
@@ -64,6 +57,34 @@ const Login = () => {
     }
   }
 
+  const forgotPasswordMutation = useMutation({
+    mutationKey: ["FORGOT_PASSWORD"],
+    mutationFn: Store.forgotPassword,
+    onSuccess: (res) => {
+      if (res.stack) {
+        toast.error(res.response.data.message);
+      } else {
+        toast.success(res?.data?.message);
+      }
+    },
+  });
+
+  async function forgotPasswordHandler(abc) {
+    const inputDetails = {
+      registrationNumber: abc.registrationNumber,
+      email: abc.email,
+    };
+
+    try {
+      forgotPasswordMutation.mutate({
+        registrationNumber: inputDetails.registrationNumber,
+        email: inputDetails.email,
+      });
+    } catch (error) {
+      console.log(`Error in forgot password handler`, error);
+    }
+  }
+
   return (
     <>
       {
@@ -74,94 +95,139 @@ const Login = () => {
             </div>
           )}
 
-          {error && <div className="text-red-500">{error}</div>}
-          <form
-            onSubmit={handleSubmit(submitHandler)}
-            style={{ width: "400px", height: "auto" }}
-            className="bg-white rounded-lg shadow-lg px-8 py-4"
-          >
-            <h1 className="text-3xl font-bold mb-4 text-black">Login</h1>
-            <p className="mb-6 text-black">
-              Enter your credentials to login to your account.
-            </p>
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label className="text-black" htmlFor="email">
-                  Email
-                </Label>
-                {errors?.email?.message && (
-                  <div className="text-red-500"> {errors?.email?.message} </div>
-                )}
-
-                <Input
-                  {...register("email")}
-                  id="email"
-                  type="email"
-                  placeholder="example@gmail.com"
-                  className="text-black"
-                />
-              </div>
-
-              <div className="flex justify-center items-center font-bold text-black">
-                <span>OR</span>
-              </div>
-
-              <div className="grid gap-2">
-                <Label className="text-black" htmlFor="email">
-                  Exam roll number
-                </Label>
-                {errors?.rollNumber?.message && (
-                  <div className="text-red-500"> {errors?.email?.message} </div>
-                )}
-
-                <Input
-                  {...register("rollNumber")}
-                  type="text"
-                  placeholder="21ABCD012345"
-                  className="text-black"
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex justify-between items-center ">
-                  <Label className="text-black" htmlFor="password">
-                    Password
+          {!hideForm ? (
+            <form
+              onSubmit={handleSubmit(submitHandler)}
+              style={{ width: "400px", height: "auto" }}
+              className="bg-white rounded-lg shadow-lg px-8 py-4"
+            >
+              <h1 className="text-3xl font-bold mb-4 text-black">Login</h1>
+              <p className="mb-6 text-black">
+                Enter your credentials to login to your account.
+              </p>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label className="text-black" htmlFor="email">
+                    Email
                   </Label>
-                  <span className="my-2 text-slate-950 cursor-pointer text-sm underline">
-                    Forgot Password?
-                  </span>
+
+                  <Input
+                    {...register("email")}
+                    id="email"
+                    type="email"
+                    placeholder="exmple@gmail.com"
+                    className="text-black"
+                  />
                 </div>
 
-                {errors?.password?.message && (
-                  <div className="text-red-500">
-                    {errors?.password?.message}{" "}
+                <div className="flex justify-center items-center font-bold text-black">
+                  <span>OR</span>
+                </div>
+
+                <div className="grid gap-2">
+                  <Label className="text-black" htmlFor="email">
+                    Exam Roll No
+                  </Label>
+
+                  <Input
+                    {...register("rollNumber")}
+                    type="text"
+                    placeholder="21ABCD012345"
+                    className="text-black"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <div className="flex justify-between items-center ">
+                    <Label className="text-black" htmlFor="password">
+                      Password
+                    </Label>
+                    <span
+                      className="my-2 text-slate-950 cursor-pointer text-sm underline"
+                      onClick={() => {
+                        setHideForm(true);
+                      }}
+                    >
+                      Forgot Password?
+                    </span>
                   </div>
-                )}
-                <Input
-                  {...register("password")}
-                  type="password"
-                  id="password"
-                  className="text-black"
-                  placeholder="john123@"
-                />
+
+                  <Input
+                    {...register("password")}
+                    type="password"
+                    id="password"
+                    className="text-black"
+                    placeholder="john123@"
+                  />
+                </div>
               </div>
-            </div>
 
-            <Button
-              className="w-full text-white mt-4 relative mb-2 bg-slate-900 hover:bg-slate-950"
-              type="submit"
-              disabled={state.loading}
+              <Button
+                className="w-full text-white mt-4 relative mb-2 bg-slate-900 hover:bg-slate-950"
+                type="submit"
+                disabled={state.loading}
+              >
+                Sign in
+              </Button>
+
+              <span className="text-sm text-black">
+                {"Don't have an account? "}
+                <Link to="/register" className="text-blue-900 underlines">
+                  Register Now
+                </Link>
+              </span>
+            </form>
+          ) : (
+            <form
+              onSubmit={handleSubmit(forgotPasswordHandler)}
+              style={{ width: "400px", height: "auto" }}
+              className="bg-white rounded-lg shadow-lg px-8 py-4"
             >
-              Sign in
-            </Button>
+              <h1 className="text-3xl font-bold mb-4 text-black">
+                Forgot Password
+              </h1>
+              <p className="mb-6 text-black">
+                Enter your credentials to get a new password.
+              </p>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label className="text-black" htmlFor="email">
+                    Registration No
+                  </Label>
 
-            <span className="text-sm text-black">
-              {"Don't have an account? "}
-              <Link to="/register" className="text-blue-900 underlines">
-                Register Now
-              </Link>
-            </span>
-          </form>
+                  <Input
+                    {...register("registrationNumber")}
+                    id="registrationNumber"
+                    type="registrationNumber"
+                    placeholder="21ABC012345"
+                    className="text-black"
+                  />
+                </div>
 
+                <div className="grid gap-2">
+                  <div className="flex justify-between items-center ">
+                    <Label className="text-black" htmlFor="password">
+                      Email
+                    </Label>
+                  </div>
+
+                  <Input
+                    {...register("email")}
+                    id="email"
+                    className="text-black"
+                    placeholder="example@gmail.com"
+                  />
+                </div>
+              </div>
+
+              <Button
+                className="w-full text-white mt-4 relative mb-2 bg-slate-900 hover:bg-slate-950"
+                type="submit"
+                disabled={state.loading}
+              >
+                Submit
+              </Button>
+            </form>
+          )}
           <ToastContainer theme="dark" />
         </div>
       }
