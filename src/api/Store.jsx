@@ -343,4 +343,25 @@ export const Store = proxy({
   },
 
 
+  forgotPassword: async ({ registrationNumber, email }) => {
+    console.log(registrationNumber);
+    console.log(email);
+
+    Store.loading = true;
+    try {
+      const res = await Axios.post("/api/v1/users/forgetPassword", {
+        registrationNumber,
+        email,
+      });
+      // console.log("forgot password response", res);
+
+      return res;
+    } catch (error) {
+      // console.log("error in the forgot password", error);
+      return error;
+    } finally {
+      Store.loading = false;
+    }
+  },
+
 });

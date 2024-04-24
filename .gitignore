@@ -1,3 +1,6 @@
 node_modules
 dist
 dist-ssr
+.firebase
+.firebaserc
+firebase.json
