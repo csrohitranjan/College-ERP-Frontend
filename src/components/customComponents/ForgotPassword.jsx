@@ -6,6 +6,7 @@ import { Store } from "../../api/Store";
 import { ToastContainer, toast } from "react-toastify";
 import { Button } from "../libraryComponents/button";
 import { useSnapshot } from "valtio";
+import Loader from "./Loader";
 
 const ForgotPassword = () => {
     const { register, reset, handleSubmit } = useForm();
@@ -46,6 +47,11 @@ const ForgotPassword = () => {
 
     return (
         <div className="h-[calc(100vh-64px)] bg-gray-950 flex flex-col justify-center items-center relative">
+            {state.loading && (
+                <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 size-20">
+                    <Loader />
+                </div>
+            )}
             <form
                 onSubmit={handleSubmit(forgotPasswordHandler)}
                 className="bg-white rounded-lg shadow-lg px-8 py-4"
