@@ -75,7 +75,7 @@ const RegisterAdmin = () => {
 
         <div className="col-span-2 flex flex-col gap-2">
           <Label className="text-xs" htmlFor="email">
-            Email Address
+            Email
           </Label>
           <Input
             {...register("email")}

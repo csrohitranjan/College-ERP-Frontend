@@ -74,80 +74,83 @@ const Profile = () => {
         className="grid grid-cols-2 grid-rows-7 gap-x-4 items-center w-[800px] px-4 h-[500px]"
         onSubmit={handleSubmit(updateHandler)}
       >
+        {/* Name */}
         <div className="text-start flex flex-col gap-2">
           <Label className="text-sm" htmlFor="fullName">
             Name
           </Label>
           <Input
-            {...register("fullName")}
             id="fullName"
-            placeholder={data?.data?.user?.fullName}
-            className="bg-white text-black w-full "
-            readOnly
+            value={data?.data?.user?.fullName}
+            className="bg-white text-black w-full"
+            disabled
           />
         </div>
 
+        {/* Father's Name */}
         <div className="text-start flex flex-col gap-2">
-          <Label className="text-sm" htmlFor="firstName">
+          <Label className="text-sm" htmlFor="fatherName">
             Father's Name
           </Label>
           <Input
-            {...register("fatherName")}
             id="fatherName"
-            placeholder={data?.data?.user?.fatherName}
-            className="bg-white text-black w-full "
-            readOnly
+            value={data?.data?.user?.fatherName}
+            className="bg-white text-black w-full"
+            disabled
           />
         </div>
 
-        <div className="text-start flex flex-col gap-2 w-full ">
-          <Label className="text-sm" htmlFor="firstName">
+        {/* Class Roll No */}
+        <div className="text-start flex flex-col gap-2 w-full">
+          <Label className="text-sm" htmlFor="classRollNumber">
             Class Roll No
           </Label>
           <Input
-            {...register("classRollNumber")}
             id="classRollNumber"
-            placeholder={data?.data?.user?.classRollNumber}
+            value={data?.data?.user?.classRollNumber}
             className="bg-white text-black"
-            readOnly
+            disabled
           />
         </div>
 
-        <div className="text-start flex flex-col gap-2 w-full ">
-          <Label className="text-sm" htmlFor="firstName">
+        {/* Registration No */}
+        <div className="text-start flex flex-col gap-2 w-full">
+          <Label className="text-sm" htmlFor="registrationNumber">
             Registration No
           </Label>
           <Input
-            {...register("registrationNumber")}
             id="registrationNumber"
-            placeholder={data?.data?.user?.registrationNumber}
+            value={data?.data?.user?.registrationNumber}
             className="bg-white text-black"
-            readOnly
+            disabled
           />
         </div>
 
-        <div className="text-start flex flex-col gap-2 w-full ">
-          <Label className="text-sm" htmlFor="firstName">
+        {/* Exam Roll No */}
+        <div className="text-start flex flex-col gap-2 w-full">
+          <Label className="text-sm" htmlFor="examRollNumber">
             Exam Roll No
           </Label>
           <Input
-            {...register("examRollNumber")}
-            placeholder={
+            id="examRollNumber"
+            value={
               !data?.data?.user?.examRollNumber
                 ? "John"
                 : data?.data?.user?.examRollNumber
             }
             className="bg-white text-black"
-            readOnly
+            disabled
           />
         </div>
 
+        {/* Current Semester */}
         <div className="text-start flex flex-col gap-2">
-          <Label className="text-sm" htmlFor="Programme">
+          <Label className="text-sm" htmlFor="semester">
             Current Semester
           </Label>
           <select
             {...register("semester")}
+            id="semester"
             className="w-full text-black gray-300 rounded-md h-[36px] px-2 text-sm"
           >
             <option value="" hidden>
@@ -164,16 +167,16 @@ const Profile = () => {
           </select>
         </div>
 
+        {/* Email */}
         <div className="col-start-1 flex flex-col gap-2 col-end-3 text-start">
           <Label className="text-sm" htmlFor="email">
             Email
           </Label>
           <Input
             {...register("email")}
+            type="email"
             placeholder={
-              !data?.data?.user?.email
-                ? "example@email.com"
-                : data?.data?.user?.email
+              !data?.data?.user?.email ? "example@email.com" : data?.data?.user?.email
             }
             className="bg-white text-black"
           />
@@ -182,6 +185,7 @@ const Profile = () => {
           )}
         </div>
 
+        {/* Gender */}
         <div className="text-start flex flex-col gap-2">
           <Label className="text-sm" htmlFor="gender">
             Gender
@@ -190,6 +194,7 @@ const Profile = () => {
             {...register("gender")}
             id="gender"
             className="w-full text-black gray-300 rounded-md h-[36px] px-2 text-sm"
+            disabled={data?.data?.user?.gender ? true : false}
           >
             <option value="" hidden>
               {!data?.data?.user?.gender ? "Gender" : data?.data?.user?.gender}
@@ -199,6 +204,7 @@ const Profile = () => {
           </select>
         </div>
 
+        {/* Mobile Number */}
         <div className="text-start flex flex-col gap-2">
           <Label className="text-sm" htmlFor="phoneNumber">
             Mobile Number
@@ -214,40 +220,39 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="text-start flex flex-col gap-2 w-full ">
-          <Label className="text-sm" htmlFor="firstName">
+        {/* Programme */}
+        <div className="text-start flex flex-col gap-2 w-full">
+          <Label className="text-sm" htmlFor="programme">
             Programme
           </Label>
           <Input
-            {...register("programme")}
             id="programme"
-            placeholder={
-              !data?.data?.user?.programme
-                ? "Your Programme"
-                : data?.data?.user?.programme
+            value={
+              !data?.data?.user?.programme ? "Your Programme" : data?.data?.user?.programme
             }
             className="bg-white text-black"
-            readOnly
+            disabled
           />
         </div>
 
-        <div className="text-start flex flex-col gap-2 w-full ">
-          <Label className="text-sm" htmlFor="firstName">
+        {/* Department */}
+        <div className="text-start flex flex-col gap-2 w-full">
+          <Label className="text-sm" htmlFor="department">
             Department
           </Label>
           <Input
-            {...register("department")}
             id="department"
-            placeholder={
+            value={
               !data?.data?.user?.department
                 ? "Your Department"
                 : data?.data?.user?.department
             }
             className="bg-white text-black"
-            readOnly
+            disabled
           />
         </div>
 
+        {/* Submit Button */}
         <div className="col-start-1 col-end-3">
           <Button
             type="submit"
@@ -257,6 +262,8 @@ const Profile = () => {
           </Button>
         </div>
       </form>
+
+
       <ToastContainer theme="dark" />
     </div>
   );

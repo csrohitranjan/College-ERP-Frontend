@@ -57,14 +57,14 @@ const ForgotPassword = () => {
                 <div className="grid gap-4">
                     <div className="grid gap-2">
                         <Label className="text-black" htmlFor="email">
-                            Registration Number
+                            Registration No
                         </Label>
 
                         <Input
                             {...register("registrationNumber")}
                             id="registrationNumber"
                             type="registrationNumber"
-                            placeholder="1234"
+                            placeholder="21ABC012345"
                             className="text-black"
                         />
                     </div>
@@ -79,8 +79,9 @@ const ForgotPassword = () => {
                         <Input
                             {...register("email")}
                             id="email"
+                            type="email"
                             className="text-black"
-                            placeholder="john123@"
+                            placeholder="example@gmail.com"
                         />
                     </div>
                 </div>

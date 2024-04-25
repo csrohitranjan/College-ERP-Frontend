@@ -5,7 +5,7 @@ const Footer = () => {
                 <img src="/assets/linkedin.png" alt="linkedin" className="size-12" />
             </a>
 
-            <span className="font-Poppins">Developed by Mr. Rohit Ranjan</span>
+            <span className="font-Poppins">Designed and developed by Mr. Rohit Ranjan</span>
         </div>
     );
 };

@@ -129,7 +129,7 @@ export function Register() {
 
             <div>
               <Label className="text-black" htmlFor="classRollNumber">
-                Class roll number
+                Class Roll No
               </Label>
               <Input
                 {...register("classRollNumber")}
@@ -146,7 +146,7 @@ export function Register() {
 
             <div>
               <Label className="text-black" htmlFor="regNumber">
-                Registration number
+                Registration No
               </Label>
               <Input
                 {...register("regNumber")}
@@ -163,7 +163,7 @@ export function Register() {
 
             <div>
               <Label className="text-black" htmlFor="examRollNumber">
-                Exam roll number
+                Exam Roll No
               </Label>
               <Input
                 {...register("examRollNumber")}
@@ -228,8 +228,9 @@ export function Register() {
               </Label>
               <Input
                 {...register("password")}
+                type="password"
                 id="password"
-                placeholder="(Optional) Last Five Digit of Exam Roll No"
+                placeholder="John123@"
                 className="input-field text-black"
               />
             </div>

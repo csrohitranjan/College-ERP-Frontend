@@ -85,7 +85,7 @@ const Login = () => {
                   {...register("email")}
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="example@gmail.com"
                   className="text-black"
                 />
               </div>
@@ -96,13 +96,13 @@ const Login = () => {
 
               <div className="grid gap-2">
                 <Label className="text-black" htmlFor="email">
-                  Exam roll number
+                  Exam Roll No
                 </Label>
 
                 <Input
                   {...register("rollNumber")}
                   type="text"
-                  placeholder="12XYZ0"
+                  placeholder="21ABCD012345"
                   className="text-black"
                 />
               </div>
@@ -122,8 +122,9 @@ const Login = () => {
                 <Input
                   {...register("password")}
                   id="password"
+                  type="password"
                   className="text-black"
-                  placeholder="john123@"
+                  placeholder="John123@"
                 />
               </div>
             </div>
