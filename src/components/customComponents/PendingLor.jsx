@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useForm } from "react-hook-form";
 import { Dialog } from "@radix-ui/react-dialog";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { formatDate, capitalizeFirstLetter } from "../../utils/generalUtils.js"
 
@@ -37,6 +37,8 @@ const PendingLor = () => {
   const [lorId, setlorId] = useState("");
   const [apiData, setapiData] = useState([]);
   const [error, setError] = useState(false);
+  const [filteredArray, setfilteredArray] = useState([]);
+  const [triggerSuccess, setTriggerSuccess] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["GET_PENDING_LOR"],
@@ -203,13 +205,33 @@ const PendingLor = () => {
     }
   }
 
-  const user = apiData?.user;
+  // Search Part Start
 
-  const filteredArray = apiData
-    ? apiData.lors
-      ?.map((item) => ({ ...item, ...user }))
-      .filter((item) => item.status === "pending")
-    : [];
+  const previousLengthRef = useRef(0);
+
+  useEffect(() => {
+    if (apiData) {
+      const user = apiData?.user;
+      // eslint-disable-next-line no-unused-vars
+      const { _id, ...myObject } = user !== undefined && user;
+      const res = apiData.lors
+        ?.map((item) => ({ ...item, ...myObject }))
+        .filter((item) => item.status === "pending");
+
+      res?.length > 0 && setfilteredArray(res);
+
+      const currentLength = res?.length;
+
+      const previousLength =
+        previousLengthRef.current !== undefined ? previousLengthRef.current : 0;
+
+      if (currentLength > previousLength) {
+        setTriggerSuccess(true);
+      }
+    }
+  }, [apiData]);
+
+  // Saerch Part End
 
 
   return (
@@ -303,7 +325,7 @@ const PendingLor = () => {
         </TableHeader>
 
         <TableBody>
-          {filteredArray === undefined && data?.pendingLORs
+          {filteredArray?.length === 0 || (filteredArray === undefined && data?.pendingLORs)
             ? data?.pendingLORs?.map((lor, i) => {
               return (
                 <TableRow className="text-center poppins-regular" key={i}>
