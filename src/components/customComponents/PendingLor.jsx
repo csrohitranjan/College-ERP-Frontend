@@ -50,6 +50,7 @@ const PendingLor = () => {
     recipient: z.string().nonempty("Recipient is required"),
     companyName: z.string().nonempty("Company name is required"),
     companyAddress: z.string().nonempty("Company address is required"),
+    recipientDepartment: z.string().optional(),
   });
 
   const {
