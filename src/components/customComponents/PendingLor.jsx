@@ -32,6 +32,7 @@ import { formatDate, capitalizeFirstLetter } from "../../utils/generalUtils.js"
 
 
 const PendingLor = () => {
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [lorId, setlorId] = useState("");
   const [apiData, setapiData] = useState([]);
@@ -63,11 +64,35 @@ const PendingLor = () => {
   });
 
 
+  const Editlor = useMutation({
+    mutationKey: ["EDIT_LOR"],
+    mutationFn: Store.updateLor,
+
+    onSuccess: (res) => {
+      // console.log("TEST", res)
+      if (res.stack) {
+        toast.error(res?.response?.data?.message);
+        setLoading(false)
+      } else {
+        // toast.success(res.message);   // This Gives message that LOR update Successfully.
+        approveLor.mutate({
+          lorId: lorId,
+        });
+      }
+    },
+    onError: (error) => {
+      setLoading(false);
+      console.log("Error in EditLor mutation", error)
+    }
+  });
+
+
 
   const approveLor = useMutation({
     mutationKey: ["APPROVE_LOR"],
     mutationFn: Store.approveLor,
     onSuccess: (res) => {
+      setLoading(false);
       if (res.stack) {
         toast.error(res?.response?.data?.message);
       } else {
@@ -82,24 +107,30 @@ const PendingLor = () => {
         setOpen(false);
       }
     },
+    onError: (error) => {
+      setLoading(false);
+      console.log("Error in approveLor mutation", error)
+    }
   });
 
 
-  const Editlor = useMutation({
-    mutationKey: ["EDIT_LOR"],
-    mutationFn: Store.updateLor,
+  const rejectLor = useMutation({
+    mutationKey: ["REJECT_LOR"],
+    mutationFn: Store.rejectLor,
 
     onSuccess: (res) => {
-      console.log("TEST", res)
+      setLoading(false);
       if (res.stack) {
-        toast.error(res?.response?.data?.message);
+        toast.error(res.response.data.message);
       } else {
-        // toast.success(res.message);   // This Gives message that LOR update Successfully.
-        approveLor.mutate({
-          lorId: lorId,
-        });
+        toast.success(res.message);
+        cache.invalidateQueries(["GET_PENDING_LOR"]);
       }
     },
+    onError: (error) => {
+      setLoading(false)
+      console.log("Eroor in reject mutation", error)
+    }
   });
 
 
@@ -114,7 +145,7 @@ const PendingLor = () => {
 
   const submitHandler = (inputData) => {
     console.log("inputData", inputData);
-
+    setLoading(true);
     try {
       Editlor.mutate({
         recipient: inputData.recipient,
@@ -138,21 +169,10 @@ const PendingLor = () => {
   };
 
 
-  const rejectLor = useMutation({
-    mutationKey: ["REJECT_LOR"],
-    mutationFn: Store.rejectLor,
 
-    onSuccess: (res) => {
-      if (res.stack) {
-        toast.error(res.response.data.message);
-      } else {
-        toast.success(res.message);
-        cache.invalidateQueries(["GET_PENDING_LOR"]);
-      }
-    },
-  });
 
   const rejectHandler = (lorId) => {
+    setLoading(true);
     try {
       rejectLor.mutate({
         lorId: lorId,
@@ -172,11 +192,9 @@ const PendingLor = () => {
   state.examRollNumber && console.log(state.examRollNumber);
 
   async function filterLors() {
-    "filter lors function triggered";
     try {
       const res = await Store.filteringLor(state.examRollNumber);
       // res.data && error && setError(false);
-
       setapiData(res.data);
     } catch (error) {
       // setError(true);
@@ -225,6 +243,11 @@ const PendingLor = () => {
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="bg-white text-black">
+          {loading && (
+            <div className="absolute top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 size-20">
+              <Loader />
+            </div>
+          )}
           <DialogHeader className="mb-3">
             <DialogTitle className="text-2xl text-center">Approve LOR</DialogTitle>
             <DialogDescription className="text-center">
