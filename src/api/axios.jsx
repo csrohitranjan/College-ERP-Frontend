@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "https://production-college-erp-backend.onrender.com";
+const baseUrl = "https://college-erp-backend-production.onrender.com";
 
 export const Axios = axios.create({
   baseURL: baseUrl,
