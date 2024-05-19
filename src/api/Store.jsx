@@ -367,4 +367,52 @@ export const Store = proxy({
     }
   },
 
+
+
+  findUserProfile: async ({ examRollNumber }) => {
+    // console.log(examRollNumber)
+    try {
+      Store.loading = true;
+      const response = await Axios.get(`/api/v1/users/${examRollNumber}/findUserByExamRollNumber`);
+      console.log(response);
+      return response;
+    } catch (error) {
+      // console.log('Error in findUserProfile', error)
+      return error;
+    } finally {
+      Store.loading = false;
+    }
+  },
+
+
+
+  updateUserProfile: async ({ fullName, fatherName, classRollNumber, examRollNumber, registrationNumber, programme, department, currentSemester, gender, email, phoneNumber }) => {
+
+    try {
+      Store.loading = true;
+      const response = await Axios.put(`/api/v1/users/${examRollNumber}/updateUserProfileBYExamRollNumber`, {
+        fullName,
+        fatherName,
+        classRollNumber,
+        registrationNumber,
+        programme,
+        department,
+        currentSemester,
+        gender,
+        email,
+        phoneNumber
+      });
+      // console.log(response)
+      return response;
+    } catch (error) {
+      // console.log("Error in updateUserProfile ")
+      return error;
+    } finally {
+      Store.loading = false;
+    }
+  }
+
+
+
+
 });

@@ -15,6 +15,8 @@ import ApprovedLor from "./components/customComponents/ApprovedLors";
 import RejectedLor from "./components/customComponents/RejectedLor";
 import RegisterAdmin from "./components/customComponents/RegisterAdmin";
 import ForgotPassword from "./components/customComponents/ForgotPassword";
+import FindAndUpdateUserProfile from "./components/customComponents/FindAndUpdateUserProfile"
+
 
 const App = () => {
   return (
@@ -64,6 +66,8 @@ const App = () => {
               path="/adminDashboard/registerstudent"
               element={<Register />}
             />
+
+            <Route path="/adminDashboard/searchUser" element={<FindAndUpdateUserProfile />} />
 
             <Route path="/adminDashboard/profile" element={<Profile />} />
 
