@@ -31,7 +31,9 @@ export function Register() {
         toast.error(`${res.response.data.message}`);
       } else {
         toast.success(`${res.data.message}`);
-        // navigate("/login");
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000); // Delay navigation for 2 seconds to show the toast message
       }
     },
 

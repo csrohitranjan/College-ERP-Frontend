@@ -1,5 +1,5 @@
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Home from "src/components/customComponents/Home";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "src/components/customComponents/Login";
 import { Register } from "src/components/customComponents/Register";
 import Layout from "./components/customComponents/Layout";
@@ -15,71 +15,50 @@ import ApprovedLor from "./components/customComponents/ApprovedLors";
 import RejectedLor from "./components/customComponents/RejectedLor";
 import RegisterAdmin from "./components/customComponents/RegisterAdmin";
 import ForgotPassword from "./components/customComponents/ForgotPassword";
-import FindAndUpdateUserProfile from "./components/customComponents/FindAndUpdateUserProfile"
+import FindAndUpdateUserProfile from "./components/customComponents/FindAndUpdateUserProfile";
+
 
 
 const App = () => {
   return (
-    <>
-      <Router>
-        <Routes>
-          {/* <Route path="/" element={<Login />} /> */}
-          <Route path="/" element={<Home />} />
-          <Route element={<Layout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgotPassword" element={<ForgotPassword />} />
-          </Route>
+    <Router>
+      <Routes>
+        {/* Redirect from root to login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* <Route path="/" element={<Home />} /> */}
 
-          {/* Student Routes */}
+        {/* Public Routes */}
+        <Route element={<Layout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+        </Route>
 
-          <Route element={<DashboardLayout />}>
-            <Route path="/studDashboard" element={<StudentDashboard />} />
-            <Route path="/studDashboard/lor" element={<LorApplication />} />
-            <Route path="/studDashboard/profile" element={<Profile />} />
-            <Route
-              path="/studDashboard/changePassword"
-              element={<ChangePassword />}
-            />
-          </Route>
+        {/* Student Routes */}
+        <Route element={<DashboardLayout />}>
+          <Route path="/studDashboard" element={<StudentDashboard />} />
+          <Route path="/studDashboard/lor" element={<LorApplication />} />
+          <Route path="/studDashboard/profile" element={<Profile />} />
+          <Route path="/studDashboard/changePassword" element={<ChangePassword />} />
+        </Route>
 
-          {/* Admin Routes */}
-
-          <Route element={<AdminDashboardLayout />}>
-            <Route path="/adminDashboard" element={<AdminDashboard />} />
-            <Route path="/adminDashboard/pendingLor" element={<PendingLor />} />
-            <Route
-              path="/adminDashboard/approvedLor"
-              element={<ApprovedLor />}
-            />
-            <Route
-              path="/adminDashboard/rejectedLor"
-              element={<RejectedLor />}
-            />
-
-            <Route
-              path="/adminDashboard/registerAdmin"
-              element={<RegisterAdmin />}
-            />
-
-            <Route
-              path="/adminDashboard/registerstudent"
-              element={<Register />}
-            />
-
-            <Route path="/adminDashboard/searchUser" element={<FindAndUpdateUserProfile />} />
-
-            <Route path="/adminDashboard/profile" element={<Profile />} />
-
-            <Route
-              path="/adminDashboard/changepassword"
-              element={<ChangePassword />}
-            />
-          </Route>
-        </Routes>
-      </Router>
-    </>
+        {/* Admin Routes */}
+        <Route element={<AdminDashboardLayout />}>
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/adminDashboard/pendingLor" element={<PendingLor />} />
+          <Route path="/adminDashboard/approvedLor" element={<ApprovedLor />} />
+          <Route path="/adminDashboard/rejectedLor" element={<RejectedLor />} />
+          <Route path="/adminDashboard/registerAdmin" element={<RegisterAdmin />} />
+          <Route path="/adminDashboard/registerstudent" element={<Register />} />
+          <Route path="/adminDashboard/searchUser" element={<FindAndUpdateUserProfile />} />
+          <Route path="/adminDashboard/profile" element={<Profile />} />
+          <Route path="/adminDashboard/changepassword" element={<ChangePassword />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
+
+
 
 export default App;

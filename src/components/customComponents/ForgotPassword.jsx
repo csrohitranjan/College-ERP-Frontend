@@ -6,9 +6,12 @@ import { Store } from "../../api/Store";
 import { ToastContainer, toast } from "react-toastify";
 import { Button } from "../libraryComponents/button";
 import { useSnapshot } from "valtio";
+import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 
 const ForgotPassword = () => {
+
+    const navigate = useNavigate();
     const { register, reset, handleSubmit } = useForm();
     const state = useSnapshot(Store);
     const forgotPasswordMutation = useMutation({
@@ -20,6 +23,9 @@ const ForgotPassword = () => {
                 toast.error(res.response.data.message);
             } else {
                 toast.success(res?.data?.message);
+                setTimeout(() => {
+                    navigate("/login");
+                }, 2000); // Delay navigation for 2 seconds to show the toast message
             }
         },
     });
