@@ -206,7 +206,7 @@ export const Store = proxy({
     // console.log(email);
     // console.log(phoneNumber);
     // console.log(password);
-
+    Store.loading = true;  // // Added Lter Not Tested Well  
     try {
       const res = await Axios.post("/api/v1/users/registerAsAdmin", {
         fullName,

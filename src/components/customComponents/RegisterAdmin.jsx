@@ -16,6 +16,7 @@ const RegisterAdmin = () => {
     mutationKey: ["REGISTER_ADMIN"],
     mutationFn: Store.registerAdmin,
     onSuccess: (res) => {
+      Store.loading = false;   // Added Lter Not Well Tested
       if (res.stack) {
         console.log("error");
         toast.error(res.response.data.message);

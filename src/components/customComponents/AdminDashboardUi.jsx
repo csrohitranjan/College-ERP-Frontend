@@ -43,7 +43,7 @@ const AdminDashboardUi = () => {
             <div className="text-white flex flex-col gap-3 items-start">
               <div className="flex gap-3 h-[35px] rounded-md items-center hover:bg-[#1c2029] w-full px-2 relative">
                 <img src="/assets/Request.svg" alt="#" />
-                Lors
+                LORs
                 {!open ? (
                   <img
                     src="/assets/chevronDown.svg"

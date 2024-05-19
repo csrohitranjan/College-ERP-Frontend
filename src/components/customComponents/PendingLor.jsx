@@ -242,12 +242,12 @@ const PendingLor = () => {
         </div>
       )}
       <div className="flex justify-between items-center px-3 py-2">
-        <span className="font-bold">Pending Lor List</span>
+        <span className="font-bold">Pending LOR List</span>
 
         <div className="flex gap-1 items-center">
           <Input
             className="text-black w-[150px] bg-gray-200 h-[30px]"
-            placeholder="Search"
+            placeholder="Exam Roll Number"
             onChange={handleInputChange}
             ref={inputRef}
           />
