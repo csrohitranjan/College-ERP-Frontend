@@ -90,9 +90,10 @@ const FindAndUpdateUserProfile = () => {
                     <select
                         className="text-white w-full bg-gray-700 h-[35px] rounded-lg px-3 placeholder-gray-400"
                         name={field}
-                        value={userData[field]}
+                        value={userData[field] || ""}
                         onChange={handleInputChange}
                     >
+                        <option value="" disabled>{`Select ${label}`}</option>
                         {options.map((option) => (
                             <option key={option} value={option}>
                                 {option}

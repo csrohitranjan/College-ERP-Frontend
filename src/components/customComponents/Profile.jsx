@@ -152,6 +152,7 @@ const Profile = () => {
             {...register("semester")}
             id="semester"
             className="w-full text-black gray-300 rounded-md h-[36px] px-2 text-sm"
+            disabled={data?.data?.user?.currentSemester ? true : false}
           >
             <option value="" hidden>
               {!data?.data?.user?.currentSemester
