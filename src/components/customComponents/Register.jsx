@@ -9,9 +9,24 @@ import { useState } from "react";
 import { useSnapshot } from "valtio";
 import Loader from "./Loader";
 import { ToastContainer, toast } from "react-toastify";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Define the Zod schema for validation
+const registerSchema = z.object({
+  fullName: z.string().nonempty("Full name is required"),
+  fatherName: z.string().nonempty("Father's name is required"),
+  classRollNumber: z.string().nonempty("Class Roll No is required"),
+  regNumber: z.string().nonempty("Registration No is required").min(5, "Registration No must be at least 5 characters long"),
+  examRollNumber: z.string().nonempty("Exam Roll No is required").min(5, "Exam Roll No must be at least 5 characters long"),
+  programme: z.string().nonempty("Programme is required"),
+  department: z.string().nonempty("Department is required"),
+  password: z.string().optional(),
+});
+
+
 
 export function Register() {
-
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const state = useSnapshot(Store);
@@ -21,7 +36,9 @@ export function Register() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
 
   const registerUser = useMutation({
     mutationKey: ["REGISTER"],
@@ -101,29 +118,28 @@ export function Register() {
               <Input
                 {...register("fullName")}
                 id="fullName"
-                placeholder="Rohit Ranjan"
-                className="input-field text-black"
+                placeholder="Enter your full name"
+                className={`input-field text-black ${errors.fullName ? "border-red-500" : ""}`}
               />
               {errors?.fullName && (
-                <span className="text-red-500">
+                <span className="text-red-500 text-sm mt-1 block">
                   {errors?.fullName?.message}
                 </span>
               )}
             </div>
 
             <div>
-              <Label
-                className="text-black"
-                htmlFor="fatherName"
-              >{`Father's name`}</Label>
+              <Label className="text-black" htmlFor="fatherName">
+                Father's name
+              </Label>
               <Input
                 {...register("fatherName")}
                 id="fatherName"
                 placeholder="Enter your father's name"
-                className="input-field text-black"
+                className={`input-field text-black ${errors.fatherName ? "border-red-500" : ""}`}
               />
               {errors?.fatherName && (
-                <span className="text-red-500">
+                <span className="text-red-500 text-sm mt-1 block">
                   {errors?.fatherName?.message}
                 </span>
               )}
@@ -136,11 +152,11 @@ export function Register() {
               <Input
                 {...register("classRollNumber")}
                 id="classRollNumber"
-                placeholder="123"
-                className="input-field text-black"
+                placeholder="Enter your class roll number"
+                className={`input-field text-black ${errors.classRollNumber ? "border-red-500" : ""}`}
               />
               {errors?.classRollNumber && (
-                <span className="text-red-500">
+                <span className="text-red-500 text-sm mt-1 block">
                   {errors?.classRollNumber?.message}
                 </span>
               )}
@@ -153,11 +169,11 @@ export function Register() {
               <Input
                 {...register("regNumber")}
                 id="regNumber"
-                placeholder="21ABC012345"
-                className="input-field text-black"
+                placeholder="Enter your registration number"
+                className={`input-field text-black ${errors.regNumber ? "border-red-500" : ""}`}
               />
               {errors?.regNumber && (
-                <span className="text-red-500">
+                <span className="text-red-500 text-sm mt-1 block">
                   {errors?.regNumber?.message}
                 </span>
               )}
@@ -170,11 +186,11 @@ export function Register() {
               <Input
                 {...register("examRollNumber")}
                 id="examRollNumber"
-                placeholder="21ABCD012345"
-                className="input-field text-black"
+                placeholder="Enter your exam roll number"
+                className={`input-field text-black ${errors.examRollNumber ? "border-red-500" : ""}`}
               />
               {errors?.examRollNumber && (
-                <span className="text-red-500">
+                <span className="text-red-500 text-sm mt-1 block">
                   {errors?.examRollNumber?.message}
                 </span>
               )}
@@ -187,7 +203,7 @@ export function Register() {
               <select
                 {...register("programme")}
                 id="programme"
-                className="w-full bg-gray-200 border border-gray-300 rounded-md p-2 text-black"
+                className={`w-full bg-gray-200 border border-gray-300 rounded-md p-2 text-black ${errors.programme ? "border-red-500" : ""}`}
               >
                 <option value="" hidden>
                   Select Programme
@@ -200,7 +216,9 @@ export function Register() {
                 </option>
               </select>
               {errors?.programme && (
-                <div className="text-red-500">{errors.programme.message}</div>
+                <span className="text-red-500 text-sm mt-1 block">
+                  {errors?.programme?.message}
+                </span>
               )}
             </div>
 
@@ -211,7 +229,7 @@ export function Register() {
               <select
                 {...register("department")}
                 id="department"
-                className="w-full bg-gray-200 border border-gray-300 rounded-md p-2 text-black "
+                className={`w-full bg-gray-200 border border-gray-300 rounded-md p-2 text-black ${errors.department ? "border-red-500" : ""}`}
               >
                 <option value="" hidden>
                   Select Department
@@ -220,7 +238,9 @@ export function Register() {
                 <option value="BIT">BIT</option>
               </select>
               {errors?.department && (
-                <div className="text-red-500">{errors.department.message}</div>
+                <span className="text-red-500 text-sm mt-1 block">
+                  {errors?.department?.message}
+                </span>
               )}
             </div>
 
@@ -232,9 +252,14 @@ export function Register() {
                 {...register("password")}
                 type="password"
                 id="password"
-                placeholder="John123@"
-                className="input-field text-black"
+                placeholder="Enter a secure password"
+                className={`input-field text-black ${errors.password ? "border-red-500" : ""}`}
               />
+              {errors?.password && (
+                <span className="text-red-500 text-sm mt-1 block">
+                  {errors?.password?.message}
+                </span>
+              )}
             </div>
           </div>
         </div>
