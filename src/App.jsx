@@ -16,10 +16,30 @@ import RejectedLor from "./components/customComponents/RejectedLor";
 import RegisterAdmin from "./components/customComponents/RegisterAdmin";
 import ForgotPassword from "./components/customComponents/ForgotPassword";
 import FindAndUpdateUserProfile from "./components/customComponents/FindAndUpdateUserProfile";
-
-
+import detectMobile from "./utils/detectMobile";
+import { useEffect, useState } from "react"; // Added For mobile Dtection
 
 const App = () => {
+  //  Added For mobile Detection Start
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (detectMobile()) {
+      setIsMobile(true);
+    }
+  }, []);
+
+  if (isMobile) {
+    return (
+      <div style={{ textAlign: "center", marginTop: "20%", color: "red" }}>
+        <h1>Access Denied</h1>
+        <p>This website is not accessible on mobile devices. Please use a desktop browser.</p>
+      </div>
+    );
+  }
+
+  //  Added For mobile Detection End
+
   return (
     <Router>
       <Routes>
