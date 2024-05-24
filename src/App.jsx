@@ -18,10 +18,17 @@ import ForgotPassword from "./components/customComponents/ForgotPassword";
 import FindAndUpdateUserProfile from "./components/customComponents/FindAndUpdateUserProfile";
 import AccessDeniedMessage from "./components/customComponents/AccessDeniedMessage";
 import useMobileDetection from "./utils/useMobileDetection";
-
+import MaintenancePage from "./components/customComponents/MaintenancePage";
+import { getMaintenanceMode } from "./utils/maintenance" // It work as Switch
 
 
 const App = () => {
+  const isMaintenanceMode = getMaintenanceMode();
+
+  // Conditionally render the maintenance page
+  if (isMaintenanceMode) {
+    return <MaintenancePage />;
+  }
 
   // Mobile Detection Start
   const isMobile = useMobileDetection();
