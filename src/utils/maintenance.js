@@ -1,4 +1,4 @@
-let isMaintenanceMode = true;
+let isMaintenanceMode = false;  // Work as a Switch
 
 export const toggleMaintenanceMode = (status) => {
     isMaintenanceMode = status;
